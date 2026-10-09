@@ -5,9 +5,7 @@ import type { NextConfig } from 'next';
 const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMERO ?? '').replace(/\D/g, '');
 const whatsappCompleto = whatsapp.length === 10 || whatsapp.length === 11 ? `55${whatsapp}` : whatsapp;
 if (!/^55[1-9]{2}\d{8,9}$/.test(whatsappCompleto)) {
-  console.warn('
-[cosmann] ATENÇÃO: NEXT_PUBLIC_WHATSAPP_NUMERO ausente ou inválido. O botão da Tela C fica sem número. Use 55 + DDD + número e faça Redeploy.
-');
+  console.warn('[cosmann] ATENÇÃO: NEXT_PUBLIC_WHATSAPP_NUMERO ausente ou inválido. O botão da Tela C fica sem número. Use 55 + DDD + número e faça Redeploy.');
 }
 
 const nextConfig: NextConfig = {
