@@ -24,7 +24,7 @@ npm run typecheck  # só a checagem de tipos
 
 | Variável | O que é |
 |---|---|
-| `NEXT_PUBLIC_WHATSAPP_NUMERO` | WhatsApp do VendeAI: 55 + DDD + número — **a preencher**. Sem ele, o deploy de produção falha de propósito (o botão da Tela C ficaria sem destino). Se vier só DDD + número, o 55 é completado |
+| `NEXT_PUBLIC_WHATSAPP_NUMERO` | WhatsApp do VendeAI: 55 + DDD + número — **a preencher**. Sem ele, o build avisa no log e o botão da Tela C fica sem destino. Se vier só DDD + número, o 55 é completado |
 | `SHEETS_WEBHOOK_URL` | URL `/exec` do Apps Script (`apps-script/Codigo.gs`) — **a preencher** |
 | `NEXT_PUBLIC_CNPJ` | CNPJ do rodapé e da política. **Sem a variável, a página já mostra 24.521.212/0001-82**, o do rodapé do site atual ("Cosmann Promota Ltda"): confirmar CNPJ e razão social com o cliente |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Instagram da Tela A (padrão: @cosmannfinanceira) |

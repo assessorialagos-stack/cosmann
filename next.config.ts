@@ -1,11 +1,13 @@
 import type { NextConfig } from 'next';
 
-// O botão da Tela C é a saída principal da página: o deploy de produção na Vercel
-// não acontece sem o WhatsApp do VendeAI (55 + DDD + número). Previews e local seguem.
+// O botão da Tela C é a saída principal da página: avisa no log do build
+// quando o WhatsApp do VendeAI (55 + DDD + número) não está cadastrado.
 const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMERO ?? '').replace(/\D/g, '');
 const whatsappCompleto = whatsapp.length === 10 || whatsapp.length === 11 ? `55${whatsapp}` : whatsapp;
-if (process.env.VERCEL_ENV === 'production' && !/^55[1-9]{2}\d{8,9}$/.test(whatsappCompleto)) {
-  throw new Error('NEXT_PUBLIC_WHATSAPP_NUMERO ausente ou inválido. Use 55 + DDD + número (ex.: 5549999999999) e faça o deploy de novo.');
+if (!/^55[1-9]{2}\d{8,9}$/.test(whatsappCompleto)) {
+  console.warn('
+[cosmann] ATENÇÃO: NEXT_PUBLIC_WHATSAPP_NUMERO ausente ou inválido. O botão da Tela C fica sem número. Use 55 + DDD + número e faça Redeploy.
+');
 }
 
 const nextConfig: NextConfig = {
