@@ -200,7 +200,13 @@ function gravarContato_(ss, aba, v) {
 
   // Fórmulas em inglês. Se a planilha pedir ";" (ver configurar), troca as vírgulas:
   // nenhum texto dentro destas fórmulas tem vírgula.
-  const sep = PropertiesService.getScriptProperties().getProperty(PROP_SEPARADOR) || ',';
+  // Planilha em português usa ";". Se o configurar() não rodou, descobre agora (uma vez só) e guarda.
+  const props = PropertiesService.getScriptProperties();
+  let sep = props.getProperty(PROP_SEPARADOR);
+  if (!sep) {
+    sep = detectarSeparador_(ss) || ';';
+    props.setProperty(PROP_SEPARADOR, sep);
+  }
   const formula = function (f) { return sep === ',' ? f : f.replace(/,/g, sep); };
 
   // Valores primeiro (C, E e F ficam vazios) ...
