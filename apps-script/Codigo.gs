@@ -203,15 +203,23 @@ function gravarContato_(ss, aba, v) {
   const sep = PropertiesService.getScriptProperties().getProperty(PROP_SEPARADOR) || ',';
   const formula = function (f) { return sep === ',' ? f : f.replace(/,/g, sep); };
 
+  // Valores primeiro (C, E e F ficam vazios) ...
   aba.getRange(linha, 1, 1, CABECALHOS.length).setValues([[
     new Date(),                                                         // A Data do cadastro
     protegerFormula_(v.nome),                                           // B Nome
-    formula(`=HYPERLINK("https://wa.me/55${v.whatsapp}","${rotulo}")`), // C WhatsApp clicável
+    '',                                                                 // C (fórmula abaixo)
     Utilities.parseDate(v.entrada + '-01', tz, 'yyyy-MM-dd'),           // D dia 1 do mês de entrada
-    formula(`=EOMONTH(D${linha},6)`),                                   // E fim do 6º mês: todos já completaram
-    formula(`=IF(E${linha}="","",IF(E${linha}<=TODAY(),"${PODE_CHAMAR}","${AGUARDANDO}"))`), // F Situação
+    '',                                                                 // E (fórmula abaixo)
+    '',                                                                 // F (fórmula abaixo)
     'Sim'                                                               // G Autorizou contato
   ].concat(v.utm.map(protegerFormula_))]);                              // H a L campanha
+  // ... depois as fórmulas com setFormula, o mesmo método que o configurar() testou.
+  // (setValues lê a fórmula no idioma da planilha e quebra em planilha pt-BR.)
+  aba.getRange(linha, 3).setFormula(formula(`=HYPERLINK("https://wa.me/55${v.whatsapp}","${rotulo}")`)); // C WhatsApp clicável
+  aba.getRange(linha, 5, 1, 2).setFormulas([[
+    formula(`=EOMONTH(D${linha},6)`),                                   // E fim do 6º mês: todos já completaram
+    formula(`=IF(E${linha}="","",IF(E${linha}<=TODAY(),"${PODE_CHAMAR}","${AGUARDANDO}"))`) // F Situação
+  ]]);
   aba.getRange(linha, 1).setNumberFormat(FORMATO_DATA_HORA);
   aba.getRange(linha, 4).setNumberFormat(FORMATO_MES_ANO);
   aba.getRange(linha, 5).setNumberFormat(FORMATO_DATA);
