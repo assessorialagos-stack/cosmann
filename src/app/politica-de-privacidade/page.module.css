@@ -1,0 +1,139 @@
+.topo {
+  position: relative;
+  overflow: hidden;
+  padding: 22px var(--respiro) 88px;
+  background:
+    radial-gradient(100% 70% at 100% 0%, rgba(106, 163, 203, 0.3), transparent 60%),
+    linear-gradient(180deg, var(--azul) 0%, #00466f 100%);
+}
+.forma {
+  position: absolute;
+  right: -90px;
+  top: -50px;
+  width: 340px;
+}
+.conteudo {
+  position: relative;
+  max-width: 760px;
+  margin-inline: auto;
+}
+.logo {
+  width: 160px;
+  height: auto;
+  margin-bottom: 36px;
+}
+.titulo {
+  font-size: clamp(1.9rem, 7vw, 2.75rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.intro {
+  margin-top: 14px;
+  max-width: 40em;
+  color: var(--texto-2);
+  font-size: 1.0625rem;
+}
+
+.politica {
+  position: relative;
+  margin-top: -56px;
+  padding: 0 var(--respiro) 64px;
+}
+.papel {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 20px 20px 36px;
+  border-radius: 24px;
+  background: var(--branco);
+  color: #1d2b38;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  box-shadow: 0 40px 80px -40px rgba(0, 10, 25, 0.6);
+}
+.papel h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--azul);
+}
+.papel h3 {
+  margin: 24px 0 8px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #1d2b38;
+}
+.papel p {
+  margin: 0 0 14px;
+}
+.papel ul {
+  margin: 0 0 14px;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+.papel li {
+  margin: 0 0 8px;
+  padding-left: 0.2em;
+}
+.papel li::marker {
+  color: var(--azul);
+}
+.papel section {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid #d6e1ea;
+  scroll-margin-top: 16px;
+}
+.papel .resumo {
+  margin-top: 18px;
+  padding: 20px 20px 8px;
+  border: 0;
+  border-left: 4px solid var(--amarelo);
+  border-radius: 14px;
+  background: #eef5fa;
+}
+.papel a {
+  color: var(--azul);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.papel a:focus-visible {
+  outline-color: var(--azul);
+}
+.destaque {
+  font-weight: 700;
+  color: var(--azul);
+}
+.semQuebra {
+  white-space: nowrap;
+}
+.papel .voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.voltar svg {
+  width: 20px;
+  height: 20px;
+}
+.voltarFim {
+  margin-top: 24px;
+}
+
+@media (min-width: 760px) {
+  .topo {
+    padding: 30px var(--respiro) 104px;
+  }
+  .logo {
+    width: 180px;
+  }
+  .papel {
+    padding: 32px 48px 48px;
+    font-size: 1.125rem;
+  }
+}

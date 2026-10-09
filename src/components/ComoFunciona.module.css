@@ -1,0 +1,88 @@
+.como {
+  position: relative;
+  padding: 64px 0;
+  background:
+    radial-gradient(70% 60% at 100% 50%, rgba(106, 163, 203, 0.18), transparent 70%),
+    var(--azul);
+}
+.passos {
+  position: relative;
+  display: grid;
+  gap: 26px;
+  margin-top: 32px;
+}
+/* linha que liga os passos (desenha ao aparecer) */
+.passos::before {
+  content: '';
+  position: absolute;
+  left: 25px;
+  top: 26px;
+  bottom: 26px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--amarelo), rgba(247, 237, 0, 0.15));
+  transform-origin: top;
+  transition: transform 1.1s var(--curva) 0.2s;
+}
+.passos:global(.aguardando)::before {
+  transform: scaleY(0);
+}
+.passo {
+  position: relative;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.numero {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--amarelo-claro), var(--amarelo));
+  color: var(--azul-700);
+  font-size: 1.25rem;
+  font-weight: 800;
+  box-shadow: 0 0 0 6px rgba(247, 237, 0, 0.14), 0 16px 30px -14px rgba(247, 237, 0, 0.6);
+}
+.texto {
+  padding-top: 12px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+@media (min-width: 760px) {
+  .como {
+    padding: 104px 0;
+  }
+  .passos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px;
+    margin-top: 52px;
+  }
+  .passos::before {
+    left: 26px;
+    right: calc(33.33% - 26px);
+    top: 25px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--amarelo), rgba(247, 237, 0, 0.15));
+    transform-origin: left;
+  }
+  .passos:global(.aguardando)::before {
+    transform: scaleX(0);
+  }
+  .passo {
+    flex-direction: column;
+    gap: 22px;
+  }
+  .texto {
+    padding-top: 0;
+    font-size: 1.125rem;
+    max-width: 18em;
+  }
+}

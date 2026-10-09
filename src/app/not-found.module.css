@@ -1,0 +1,32 @@
+.erro {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 32px var(--respiro);
+  overflow: hidden;
+  background:
+    radial-gradient(90% 60% at 100% 0%, rgba(106, 163, 203, 0.3), transparent 60%),
+    linear-gradient(180deg, var(--azul) 0%, var(--azul-700) 100%);
+}
+.forma {
+  position: absolute;
+  right: -80px;
+  top: -40px;
+  width: 360px;
+}
+.caixa {
+  position: relative;
+  width: min(100%, 420px);
+  text-align: center;
+}
+.logo {
+  width: 180px;
+  height: auto;
+  margin: 0 auto 32px;
+}
+.titulo {
+  margin-bottom: 24px;
+  font-size: 1.75rem;
+  font-weight: 800;
+}

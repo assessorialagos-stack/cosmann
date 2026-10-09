@@ -1,0 +1,524 @@
+.quiz {
+  position: relative;
+  margin-top: 18px;
+  padding: 14px 16px 18px;
+  border-radius: 24px;
+  background: linear-gradient(165deg, rgba(0, 62, 100, 0.72) 0%, rgba(0, 35, 58, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: var(--sombra-painel);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  scroll-margin-top: 12px;
+}
+.quiz::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+}
+
+/* topo do painel: voltar + contador */
+.topo {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+}
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  margin: -8px 0 -8px -10px;
+  padding: 0 12px 0 6px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--texto-2);
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s, color 0.2s;
+}
+.voltar:hover {
+  color: var(--branco);
+  background: rgba(255, 255, 255, 0.07);
+}
+.voltar svg {
+  width: 20px;
+  height: 20px;
+}
+.contador {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--texto-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* progresso em 4 segmentos */
+.progresso {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+.progresso span {
+  position: relative;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.progresso span::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--amarelo), var(--amarelo-claro));
+  box-shadow: 0 0 14px rgba(247, 237, 0, 0.7);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--curva);
+}
+.progresso span.ativo::after {
+  transform: scaleX(1);
+}
+.aviso {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.9375rem;
+}
+
+/* etapas */
+.etapa {
+  margin-top: 16px;
+}
+.titulo {
+  font-size: clamp(1.15rem, 5vw, 1.4rem);
+  line-height: 1.28;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.titulo:focus {
+  outline: none;
+}
+.texto {
+  margin-top: 10px;
+  font-size: 0.98rem;
+  color: var(--texto-2);
+}
+
+/* botões de resposta: amarelo sobre azul, um por linha */
+.opcoes {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.opcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  padding: 11px 11px 11px 20px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--amarelo-claro) 0%, var(--amarelo) 58%, #ebe100 100%);
+  color: var(--azul-700);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--sombra-botao);
+  transition: transform 0.16s var(--curva), box-shadow 0.25s var(--curva), filter 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.opcao:hover {
+  filter: brightness(1.04);
+}
+.opcao:active {
+  transform: scale(0.985);
+}
+.opcao:focus-visible {
+  outline-color: var(--branco);
+}
+.marca {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 54, 88, 0.1);
+  transition: transform 0.3s var(--curva-mola), background-color 0.2s, color 0.2s;
+}
+.marca svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.6;
+}
+.opcao:hover .marca {
+  transform: translateX(3px);
+  background: rgba(0, 54, 88, 0.16);
+}
+.opcao[aria-pressed='true'] {
+  box-shadow: var(--sombra-botao), 0 0 0 3px var(--azul-850), 0 0 0 5px var(--branco);
+}
+.opcao[aria-pressed='true'] .marca {
+  background: var(--azul-700);
+  color: var(--amarelo);
+}
+
+/* transições entre etapas (direção conforme avança ou volta) */
+.entraFrente {
+  animation: entraFrente 0.38s var(--curva) both;
+}
+.entraTras {
+  animation: entraTras 0.38s var(--curva) both;
+}
+.entraFrente .opcao {
+  animation: subir 0.42s var(--curva) both;
+  animation-delay: calc(var(--i) * 50ms + 80ms);
+}
+
+/* telas de resultado */
+.resultadoIcone {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--amarelo);
+}
+.resultadoIcone svg {
+  width: 28px;
+  height: 28px;
+}
+.acao {
+  margin-top: 20px;
+}
+.sucesso {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+.sucesso::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(247, 237, 0, 0.38), transparent);
+  animation: pulsar 2.6s ease-in-out infinite;
+}
+.sucesso svg {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.sucesso circle {
+  fill: var(--amarelo);
+}
+.sucesso path {
+  fill: none;
+  stroke: var(--azul-700);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: desenhar 0.6s 0.25s var(--curva) forwards;
+}
+.letraMiuda {
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--texto-3);
+}
+
+/* formulário da tela B */
+.form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+.campo label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+.campo input,
+.campo select {
+  display: block;
+  width: 100%;
+  min-height: 54px;
+  padding: 13px 16px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: var(--branco);
+  color: var(--azul-800);
+  font-size: 1rem; /* 16px: o iPhone não dá zoom ao tocar */
+  font-weight: 600;
+  line-height: 1.3;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: var(--amarelo);
+  box-shadow: 0 0 0 4px rgba(247, 237, 0, 0.28);
+}
+.campo [aria-invalid='true'] {
+  border-color: var(--amarelo);
+  box-shadow: 0 0 0 3px rgba(247, 237, 0, 0.35);
+}
+.selecao {
+  position: relative;
+}
+.selecao select {
+  padding-right: 48px;
+  cursor: pointer;
+}
+.selecaoSeta {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  margin-top: -11px;
+  color: var(--azul);
+  stroke-width: 2.6;
+  transform: rotate(90deg);
+  pointer-events: none;
+}
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.autoriza {
+  margin-top: 4px;
+}
+.caixa {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.caixa input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--amarelo);
+  cursor: pointer;
+}
+.caixa input[aria-invalid='true'] {
+  outline: 3px solid var(--amarelo);
+  outline-offset: 2px;
+}
+.politica {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: 36px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(247, 237, 0, 0.7);
+  text-underline-offset: 4px;
+}
+.form :global(.botao) {
+  margin-top: 4px;
+}
+.erro {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--amarelo);
+}
+.erro::before {
+  content: '!';
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--amarelo);
+  color: var(--azul-800);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.confirmacao {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  animation: entraFrente 0.4s var(--curva) both;
+}
+.confirmacao:focus {
+  outline: none;
+}
+.confirmacaoIcone {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--amarelo);
+  color: var(--azul-700);
+}
+.confirmacaoIcone svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 3;
+}
+
+@keyframes entraFrente {
+  from {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes entraTras {
+  from {
+    opacity: 0;
+    transform: translateX(-26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes desenhar {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pulsar {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (min-width: 960px) {
+  .quiz {
+    margin-top: 28px;
+    padding: 18px 24px 26px;
+    border-radius: 28px;
+  }
+  .etapa {
+    margin-top: 20px;
+  }
+}
+/* celular deitado: painel mais compacto para a pergunta caber na tela */
+@media (orientation: landscape) and (max-height: 540px) {
+  .quiz {
+    margin-top: 0;
+    padding: 10px 14px 14px;
+  }
+  .etapa {
+    margin-top: 10px;
+  }
+  .titulo {
+    font-size: 1.05rem;
+  }
+  .opcoes {
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .opcao {
+    min-height: 50px;
+    padding-block: 7px;
+  }
+  /* telas finais: o botão principal cabe na tela */
+  .sucesso,
+  .sucesso svg,
+  .resultadoIcone {
+    width: 40px;
+    height: 40px;
+  }
+  .sucesso,
+  .resultadoIcone {
+    margin-bottom: 8px;
+  }
+  .resultadoIcone svg {
+    width: 22px;
+    height: 22px;
+  }
+  .texto {
+    margin-top: 6px;
+    font-size: 0.9rem;
+  }
+  .acao {
+    margin-top: 12px;
+    min-height: 52px;
+  }
+}
+/* celular bem estreito (320 px) com as barras do navegador ocupando espaço */
+@media (max-width: 340px) {
+  .quiz {
+    margin-top: 14px;
+    padding: 12px 14px 16px;
+  }
+  .etapa {
+    margin-top: 12px;
+  }
+}

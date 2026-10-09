@@ -1,0 +1,17 @@
+# dependências e builds
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# variáveis de ambiente locais
+.env
+.env.*
+!.env.example
+
+# sistema
+.DS_Store
+Thumbs.db
+*.log
